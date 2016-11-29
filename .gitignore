@@ -29,8 +29,6 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 # Logs
 logs
-*.log
-npm-debug.log*
 
 # Runtime data
 pids
