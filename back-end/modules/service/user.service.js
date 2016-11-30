@@ -1,10 +1,10 @@
 var async = require('async');
 var crypto=require('crypto');
-var Person = require('../schema/user.schema');
+var User = require('../schema/user.schema');
 var func = function () {
   /*用户注册*/
   this.create=function(data, callback) {
-    var person = new Person(data);
+    var user = new User(data);
     async.waterfall([
       function (callback) {
         //表单判断与加密password
@@ -23,7 +23,7 @@ var func = function () {
           }
       },
       function (err,callback) {
-        Person.find({
+        User.find({
           UserName: data.UserName
         }, function (err, docs) {
           if (docs.length == 0) {
@@ -33,7 +33,7 @@ var func = function () {
           }
         })
       }, function (msg, callback) {
-        person.save(function (err) {
+        user.save(function (err) {
           callback(err,"注册成功");
         })
       }
@@ -45,10 +45,9 @@ var func = function () {
   this.login=function () {
 
   };
-
 /*用户状态检查(未登录/在别处登录)*/
 /*用户退出登录*/
 };
 
 
-module.exports =new func;
+module.exports =new func();
