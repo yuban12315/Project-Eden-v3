@@ -1,8 +1,10 @@
 var request=require('superagent');
 var async=require('async');
-var baseUrl='http://127.0.0.1:3000';
+var baseUrl='http://127.0.0.1:3000/';
 
-request.get(baseUrl).end(function (err,res) {
+request.post(baseUrl+'test',{
+  name:"sdsd"
+},function (err,res) {
   if(err){
     console.log(err)
   }

@@ -1,10 +1,9 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "Project-Eden-v3",
+  "author": "yuban12315",
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "node ./bin/www",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },

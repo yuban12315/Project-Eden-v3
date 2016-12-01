@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
-
+var test_router=require('./back-end/routes/test');
 
 /*配置Node.js后台*/
 var app = express();
@@ -23,21 +23,13 @@ app.use(session({
 }));
 app.use(express.static(__dirname + '/www'));//静态文件
 
+/*routers*/
+app.use('/test',test_router);
+
 /*404页面*/
 app.use(function (req, res) {
-  req.session.user={
-    'name':'name'
-  };
-  req.session.data={
-    'data':'data'
-  };
   res.send('404');
 });
 
-/*socket.io配置&web服务器*/
 
-var port = (process.env.PORT || 3000);
-var io = socket.listen(app.listen(port));
-io.sockets.on('connection', function (socket) {
-  socket.emit('connected');
-});
+module.exports=app;
