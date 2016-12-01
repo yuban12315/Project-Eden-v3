@@ -1,28 +1,25 @@
 var async = require('async');
-var crypto=require('crypto');
+var crypto = require('crypto');
 var User = require('../schema/user.schema');
-var func = function () {
+var Common = require('./common.service');
+var UserService = function () {
   /*用户注册*/
-  this.create=function(data, callback) {
-    var user = new User(data);
+  this.create = function (data, callback) {
     async.waterfall([
       function (callback) {
         //表单判断与加密password
-          var flag=1;
-          if(data.UserName.length==0){
-            flag=0;
-          }
-          if(data.PassWord.length==0){
-            flag=0;
-          }
-          if(flag==1){
-            callback(null,'continue');
-          }
-          else{
-            callback(new Error('注册信息有误'),null);
-          }
+        var flag = 1;
+        if (data.UserName.length == 0 || data.PassWord.length <= 6) {
+          flag = 0;
+        }
+        if (flag == 1) {
+          callback(null, 'continue');
+        }
+        else {
+          callback(new Error('注册信息有误'), null);
+        }
       },
-      function (err,callback) {
+      function (msg, callback) {
         User.find({
           UserName: data.UserName
         }, function (err, docs) {
@@ -33,21 +30,53 @@ var func = function () {
           }
         })
       }, function (msg, callback) {
+        data.PassWord = Common.Hmac(data.PassWord);//密码加密
+        var user = new User(data);
         user.save(function (err) {
-          callback(err,"注册成功");
+          callback(err, "注册成功");
         })
       }
     ], function (err, result) {
-      callback(err,result);
+      callback(err, result);
     })
   };
-/*用户登录*/
-  this.login=function () {
-
+  /*用户登录*/
+  this.login = function (data, callback) {
+    async.waterfall([
+      function (cb) {
+        var flag = 1;
+        if (data.UserName.length == 0 || data.PassWord.length == 0) {
+          flag = 0;
+        }
+        if (flag == 1) {
+          cb(null, 'continue');
+        }
+        else {
+          cb(new Error('登录信息有误'), null);
+        }
+      },
+      function (msg, cb) {
+        User.find({
+          UserName: data.UserName
+        }, function (err, docs) {
+          if (docs.length == 0) {
+            cb(new Error('用户不存在'), null);
+          }
+          else {
+            data.PassWord=Common.Hmac(data.PassWord);
+            if(docs[0].PassWord===data.PassWord){
+              cb(null, '登录成功')
+            }
+            else{
+              cb(new Error('用户名或密码错误'),null)
+            }
+          }
+        })
+      }
+    ], function (err, result) {
+      callback(err, result);
+    })
   };
-/*用户状态检查(未登录/在别处登录)*/
-/*用户退出登录*/
 };
 
-
-module.exports =new func();
+module.exports = new UserService();
