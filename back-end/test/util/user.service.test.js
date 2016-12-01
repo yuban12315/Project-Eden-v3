@@ -1,13 +1,13 @@
-var UserService=require('../../modules/service/user.service');
-var login_data={
-  'UserName':'test_1',
-  'PassWord':'pass_1'
+var UserService = require('../../modules/service/user.service');
+var login_data = {
+  'UserName': 'test_1',
+  'PassWord': 'pass_1'
 };
-UserService.login(login_data,function (err,result) {
-  if(err){
+UserService.login(login_data, (err, result) => {
+  if (err) {
     console.log(err)
   }
-  else{
+  else {
     console.log(result)
   }
 });

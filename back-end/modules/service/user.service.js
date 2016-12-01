@@ -22,21 +22,21 @@ var UserService = function () {
       function (msg, callback) {
         User.find({
           UserName: data.UserName
-        }, function (err, docs) {
+        }, (err, docs) => {
           if (docs.length == 0) {
             callback(null, 'continue');
           } else {
             callback(new Error('用户已存在'), null);
           }
         })
-      }, function (msg, callback) {
+      },  (msg, callback)=> {
         data.PassWord = Common.Hmac(data.PassWord);//密码加密
         var user = new User(data);
-        user.save(function (err) {
+        user.save((err) => {
           callback(err, "注册成功");
         })
       }
-    ], function (err, result) {
+    ],  (err, result)=> {
       callback(err, result);
     })
   };
@@ -58,22 +58,22 @@ var UserService = function () {
       function (msg, cb) {
         User.find({
           UserName: data.UserName
-        }, function (err, docs) {
+        }, (err, docs)=> {
           if (docs.length == 0) {
             cb(new Error('用户不存在'), null);
           }
           else {
-            data.PassWord=Common.Hmac(data.PassWord);
-            if(docs[0].PassWord===data.PassWord){
+            data.PassWord = Common.Hmac(data.PassWord);
+            if (docs[0].PassWord === data.PassWord) {
               cb(null, '登录成功')
             }
-            else{
-              cb(new Error('用户名或密码错误'),null)
+            else {
+              cb(new Error('用户名或密码错误'), null)
             }
           }
         })
       }
-    ], function (err, result) {
+    ], (err, result)=> {
       callback(err, result);
     })
   };
