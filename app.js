@@ -36,8 +36,6 @@ app.use('/test', test_router);
 app.use((req, res,next)=> {
   var err=new Error('Not Found');
   err.status=404;
-  res.statusCode=404;
-  req.session.ip=req.ip.match(/\d+\.\d+\.\d+\.\d+/);
   res.send("用户IP："+req.session.ip);
 });
 

@@ -1,10 +1,10 @@
 {
-  "name": "Project-Eden-v3",
+  "name": "project-eden-v3",
   "author": "yuban12315",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "qqww": "supervisor ./bin/www",
+    "test": "karma start karma.conf.js",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
@@ -41,7 +41,13 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "0.0.45",
-    "typescript": "2.0.6"
+    "@types/jasmine": "2.5.38",
+    "typescript": "2.0.6",
+    "jasmine": "^2.4.1" ,
+    "jasmine-core": "^2.4.1" ,
+    "karma": "^1.1.0" ,
+    "karma-chrome-launcher": "^1.0.1" ,
+    "karma-jasmine": "^1.0.2"
   },
   "cordovaPlugins": [
     "cordova-plugin-whitelist",
