@@ -9,8 +9,6 @@ var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
 var test_router = require('./back-end/routes/test');
 
-//view engine setup
-
 /* express configs*/
 var app = express();
 app.use(logger('dev'));//http requests logs
@@ -21,18 +19,28 @@ app.use(session({
   secret: 'Project-Eden',
   cookie: {maxAge: 365 * 3600 * 24 * 1000},
   store: new MongoStore({
-    url: 'mongodb://127.0.0.1:27017/mongo-session'
+    url: 'mongodb://127.0.0.1:27017/Project-Eden-Test'
   })
 }));
 app.use(express.static(__dirname + '/www'));//static file
 
 /*routers*/
+app.use((req,res,next)=>{
+  req.session.ip=req.ip.match(/\d+\.\d+\.\d+\.\d+/);//记录用户ip
+  next();
+});
+app.use('/',test_router);
 app.use('/test', test_router);
 
-/*404 pages=*/
-app.use((req, res)=> {
-  res.send('404');
+/*catch 404 pages*/
+app.use((req, res,next)=> {
+  var err=new Error('Not Found');
+  err.status=404;
+  res.statusCode=404;
+  req.session.ip=req.ip.match(/\d+\.\d+\.\d+\.\d+/);
+  res.send("用户IP："+req.session.ip);
 });
+
 
 
 module.exports = app;
