@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "mongo":"mongod --dbpath D:\\Mongodb\\data\\db\\ --logpath D:\\Mongodb\\log\\data.log --logappend --bind_ip 127.0.0.1",
     "test": "karma start karma.conf.js",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
